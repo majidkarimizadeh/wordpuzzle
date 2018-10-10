@@ -10,5 +10,5 @@
     "require": {
 	    "intervention/image": "^2.3",
 		"maatwebsite/excel": "~2.1.0"
-	},
+	}
 }
