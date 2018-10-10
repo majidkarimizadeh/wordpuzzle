@@ -1,0 +1,14 @@
+{
+    "name": "majid/wordpuzzle",
+    "description": "this is word puzzle in persian",
+    "authors": [
+        {
+            "name": "majid karimi zadeh",
+            "email": "mj.karimizadeh@gmail.com"
+        }
+    ],
+    "require": {
+	    "intervention/image": "^2.3",
+		"maatwebsite/excel": "~2.1.0"
+	},
+}
