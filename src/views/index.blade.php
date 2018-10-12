@@ -18,25 +18,18 @@
 			  	</div>
 
 				<div class="form-group">
-				  	<div class="radio-inline">
-					  	<label>
-					    	<input type="radio" name="level" value="10">
-					    	سخت (10*10)
-					  	</label>
-					</div>
-					<div class="radio-inline">
-					  	<label>
-					    	<input type="radio" name="level" value="8">
-					    	متوسط (8*8)
-					  	</label>
-					</div>
-					<div class="radio-inline">
-					  	<label>
-					    	<input type="radio" checked name="level" value="6">
-					    	آسان (6*6)
-					  	</label>
-					</div>
-				</div>
+			    	<label for="exampleInputEmail1">
+			    		تعداد سطر مورد نیاز
+			    	</label>
+			    	<input type="text" name="row" class="form-control" placeholder="تعداد سطر مورد نیاز">
+			  	</div>
+
+			  	<div class="form-group">
+			    	<label for="exampleInputEmail1">
+			    		تعداد ستون مورد نیاز
+			    	</label>
+			    	<input type="text" name="col" class="form-control" placeholder="تعداد ستون مورد نیاز">
+			  	</div>
 
 				<div class="form-group">
 				  	<div class="radio-inline">

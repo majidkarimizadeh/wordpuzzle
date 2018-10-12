@@ -33,7 +33,8 @@ class PuzzleController extends Controller
 		$this->mainArray = null;
 		$this->selectedIndexWords = [];
 		$this->answerIndex = 0;
-		$this->level = 0;
+		$this->row = 0;
+		$this->col = 0;
 		$this->number = 0;
 
 		$this->width = 0;
@@ -52,11 +53,13 @@ class PuzzleController extends Controller
 	public function generate(Request $request)
 	{
 		$this->number = $request->number;
-		$this->level = $request->level;
+		$this->row = $request->row;
+		$this->col = $request->col;
+
 		$this->blockColor = $request->color;
-		$this->width = $this->level * 100;
-		$this->height = $this->level * 100;
-		$this->blockSize = $this->level * 10;
+		$this->width = $this->col * 100;
+		$this->height = $this->row * 100;
+		$this->blockSize = 100;
 
 		$this->generateEmptyImageCell();
 
@@ -69,8 +72,8 @@ class PuzzleController extends Controller
 	}
 
 	private function generateEmptyArray() {
-		for ($i = 0; $i < $this->level; $i++) { 
-			for ($j = 0; $j < $this->level; $j++) { 
+		for ($i = 0; $i < $this->row; $i++) { 
+			for ($j = 0; $j < $this->col; $j++) { 
 				$this->mainArray[$i][$j] = 0;
 			}
 		}
@@ -138,37 +141,40 @@ class PuzzleController extends Controller
 	{
 		$word = $this->words[$this->answerIndex];
 		$charecters = preg_split('//u', $word, null, PREG_SPLIT_NO_EMPTY);
-		$startPosition = mt_rand(count($charecters), $this->level - count($charecters) - 1);
-		$this->checkPositionCondition($charecters, $startPosition);
+		$this->checkPositionCondition($charecters);
 		$this->createImage();
 	}
 
-	private function checkPositionCondition($charecters, $startPosition)
+	private function checkPositionCondition($charecters)
 	{
-		$direction = mt_rand(0, 4);
+		$direction = mt_rand(0, 3);
 		if($direction === self::TOP) {
-			$col = mt_rand(0, $this->level - 1);
+			$col = mt_rand(0, $this->col - 1);
+			$row = mt_rand($this->row - count($charecters) - 1, $this->row - 1);
 			foreach ($charecters as $charecter) {
-				$this->mainArray[$startPosition][$col] = $charecter;
-				$startPosition--;
+				$this->mainArray[$row][$col] = $charecter;
+				$row--;
 			}
 		} elseif ($direction === self::BOTTOM) {
-			$col = mt_rand(0, $this->level - 1);
+			$col = mt_rand(0, $this->col - 1);
+			$row = mt_rand(0, $this->row - count($charecters) - 1);
 			foreach ($charecters as $charecter) {
-				$this->mainArray[$startPosition][$col] = $charecter;
-				$startPosition++;
+				$this->mainArray[$row][$col] = $charecter;
+				$row++;
 			}
 		} elseif ($direction === self::LEFT) {
-			$row = mt_rand(0, $this->level - 1);
+			$row = mt_rand(0, $this->row - 1);
+			$col = mt_rand($this->col - count($charecters) - 1, $this->col - 1);
 			foreach ($charecters as $charecter) {
-				$this->mainArray[$row][$startPosition] = $charecter;
-				$startPosition++;
+				$this->mainArray[$row][$col] = $charecter;
+				$col++;
 			}
 		} elseif ($direction === self::RIGHT) {
-			$row = mt_rand(0, $this->level - 1);
+			$row = mt_rand(0, $this->row - 1);
+			$col = mt_rand(0, $this->col - count($charecters) - 1);
 			foreach ($charecters as $charecter) {
-				$this->mainArray[$row][$startPosition] = $charecter;
-				$startPosition--;
+				$this->mainArray[$row][$col] = $charecter;
+				$col--;
 			}
 		} elseif ($direction === self::TOP_RIGHT) {
 			
@@ -179,6 +185,7 @@ class PuzzleController extends Controller
 		} elseif ($direction === self::BOTTOM_LEFT) {
 			
 		}
+
 	}
 
 	private function createImage()
@@ -220,8 +227,8 @@ class PuzzleController extends Controller
 			}
 		}
 
-		for ($i = 0; $i < count($this->mainArray); $i++) { 
-			for ($j = 0; $j < count($this->mainArray[$i]); $j++) { 
+		for ($i = 0; $i < $this->row; $i++) { 
+			for ($j = 0; $j < $this->col; $j++) { 
 				$text = $this->mainArray[$i][$j];
 				if($text === 0) {
 					$alphabet = config('majid/wordpuzzle.alphabet');
@@ -231,7 +238,7 @@ class PuzzleController extends Controller
 					$text = mb_convert_encoding($text, 'HTML-ENTITIES',"UTF-8");
 					$color = "#000000";
 				}
-				$img->text($text , ($i * $this->blockSize) + $this->blockSize / 2, ($j * $this->blockSize) + $this->blockSize / 2, function($font) use ($color){
+				$img->text($text , ($j * $this->blockSize) + $this->blockSize / 2, ($i * $this->blockSize) + $this->blockSize / 2, function($font) use ($color){
 		            $font->file(public_path() . "/IRANSans.woff");
 		            $font->size(34);
 		            $font->color($color);
@@ -252,7 +259,6 @@ class PuzzleController extends Controller
 				array_diff($this->selectedIndexWords, [$this->answerIndex])
 			);
 
-			// dd($this->selectedIndexWords, $this->answerIndex, $wrongAnswers);
             $excel->sheet('answers', function($sheet) use ($wrongAnswers) {
                 for ($k = 1; $k <= $this->number; $k++) {
                     $sheet->row($k, [
