@@ -33,7 +33,7 @@ class PuzzleController extends Controller
 		];
 		$this->mainArray = null;
 		$this->selectedIndexWords = [];
-		$this->answerIndex = 0;
+		$this->answerIndex = [];
 		$this->row = 0;
 		$this->col = 0;
 		$this->number = 0;
@@ -71,10 +71,13 @@ class PuzzleController extends Controller
 
 		$this->generateEmptyImageCell();
 
-		$this->generateEmptyArray();
-		$this->getFourRandomWords();
-		$this->fillArrayWithSelectedWord();
-		//$this->exportExcel();
+		for ($i = 0; $i < $this->number; $i++) { 
+			$this->generateEmptyArray();
+			$this->getFourRandomWords();
+			$this->fillArrayWithSelectedWord($i+1);
+		}
+
+		$this->exportExcel();
 
 		return redirect()->route('show.generate.puzzle');
 	}
@@ -135,22 +138,22 @@ class PuzzleController extends Controller
 
 	private function getFourRandomWords()
 	{
-		$this->selectedIndexWords = array_rand($this->words, 4);
+		$this->selectedIndexWords[] = array_rand($this->words, 4);
 		return $this->selectedIndexWords;
 	}
 
-	private function fillArrayWithSelectedWord()
+	private function fillArrayWithSelectedWord($number)
 	{
-		$this->answerIndex = $this->selectedIndexWords[rand(0, 3)];
-		$this->checkConditionForSelectedWord();
+		$this->answerIndex[] = end($this->selectedIndexWords)[rand(0, 3)];
+		$this->checkConditionForSelectedWord($number);
 	}
 
-	private function checkConditionForSelectedWord()
+	private function checkConditionForSelectedWord($number)
 	{
-		$word = $this->words[$this->answerIndex];
+		$word = $this->words[end($this->answerIndex)];
 		$charecters = preg_split('//u', $word, null, PREG_SPLIT_NO_EMPTY);
 		$this->checkPositionCondition($charecters);
-		$this->createImage();
+		$this->createImage($number);
 	}
 
 	private function checkPositionCondition($charecters)
@@ -163,7 +166,7 @@ class PuzzleController extends Controller
 		$rightCondition = 0 <= $this->col - count($charecters);
 
 		if(!$topCondition || !$leftCondition || !$rightCondition || !$bottomCondition) {
-			throw new Exception("Sorry the word's charecters ( ". $this->words[$this->answerIndex] ." ) is more than ". $this->col ." or ". $this->row, 1);
+			throw new Exception("Sorry the word's charecters ( ". $this->words[end($this->answerIndex)] ." ) is more than ". $this->col ." or ". $this->row, 1);
 			return;
 		}
 
@@ -253,7 +256,7 @@ class PuzzleController extends Controller
 
 	}
 
-	private function createImage()
+	private function createImage($number)
 	{
 		$color = null;
 		if($this->blockColor == self::GREEN_COLOR) {
@@ -288,7 +291,6 @@ class PuzzleController extends Controller
 				} else {
 					$img->insert(storage_path('app/public/blocks/') . $colors[mt_rand(0, count($colors) - 1)], 'top-left', $x, $y);
 				}
-				
 			}
 		}
 
@@ -300,8 +302,8 @@ class PuzzleController extends Controller
 					$text = $alphabet[mt_rand(0, count($alphabet) - 1)];
 					$color = config('majid/wordpuzzle.colors.fontColor');
 				} else {
-					$text = mb_convert_encoding($text, 'HTML-ENTITIES',"UTF-8");
-					$color = "#000000";
+					$text = mb_convert_encoding($text, 'HTML-ENTITIES', 'UTF-8');
+					// $color = "#000000";
 				}
 				$img->text($text , ($j * $this->blockSize) + $this->blockSize / 2, ($i * $this->blockSize) + $this->blockSize / 2, function($font) use ($color){
 		            $font->file(public_path() . "/IRANSans.woff");
@@ -313,22 +315,22 @@ class PuzzleController extends Controller
 			}
 		}
 		Storage::exists('public/question') || Storage::makeDirectory('public/question', 0777);
-		$img->save(storage_path('app/public/question/') . "test.png", 100);
+		$img->save(storage_path('app/public/question/') . $number . ".png", 100);
 	}
 
 	private function exportExcel()
 	{
 		$excelName = "answers";
 		Excel::create($excelName, function($excel) {
-			$wrongAnswers = array_values(
-				array_diff($this->selectedIndexWords, [$this->answerIndex])
-			);
-
-            $excel->sheet('answers', function($sheet) use ($wrongAnswers) {
-                for ($k = 1; $k <= $this->number; $k++) {
-                    $sheet->row($k, [
+            $excel->sheet('answers', function($sheet) {
+                for ($k = 0; $k < $this->number; $k++) {
+                	$wrongAnswers = array_values(
+						array_diff($this->selectedIndexWords[$k], [$this->answerIndex[$k]])
+					);
+                    $sheet->row($k + 1, [
+                    	$k + 1,
                         'کدام کلمه را همشاهده میکنید؟',
-                        $this->words[$this->answerIndex],
+                        $this->words[$this->answerIndex[$k]],
                         $this->words[$wrongAnswers[0]],
                         $this->words[$wrongAnswers[1]],
                         $this->words[$wrongAnswers[2]],
