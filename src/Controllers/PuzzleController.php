@@ -28,7 +28,7 @@ class PuzzleController extends Controller
 	public function __construct()
 	{
 		$this->words = [
-			'مجید', 'بهنام', 'جواد', 'حسن', 'سگ', 'حامد'
+			'مجید', 'بهنام', 'جواد', 'حسن', 'غلامرضا', 'حامد'
 		];
 		$this->mainArray = null;
 		$this->selectedIndexWords = [];
@@ -147,7 +147,7 @@ class PuzzleController extends Controller
 
 	private function checkPositionCondition($charecters)
 	{
-		$direction = mt_rand(0, 3);
+		$direction = mt_rand(0, 7);
 		if($direction === self::TOP) {
 			$col = mt_rand(0, $this->col - 1);
 			$row = mt_rand($this->row - 1 - ($this->row - count($charecters)) , $this->row - 1);
@@ -177,13 +177,37 @@ class PuzzleController extends Controller
 				$col++;
 			}
 		} elseif ($direction === self::TOP_RIGHT) {
-			
+			$col = mt_rand(0, $this->col - count($charecters));
+			$row = mt_rand($this->row - 1 - ($this->row - count($charecters)) , $this->row - 1);
+			foreach ($charecters as $charecter) {
+				$this->mainArray[$row][$col] = $charecter;
+				$row--;
+				$col++;
+			}
 		} elseif ($direction === self::TOP_LEFT) {
-			
+			$col = mt_rand($this->col - 1 - ($this->col - count($charecters)) , $this->col - 1);
+			$row = mt_rand($this->row - 1 - ($this->row - count($charecters)) , $this->row - 1);
+			foreach ($charecters as $charecter) {
+				$this->mainArray[$row][$col] = $charecter;
+				$row--;
+				$col--;
+			}
 		} elseif ($direction === self::BOTTOM_RIGHT) {
-			
+			$col = mt_rand(0, $this->col - count($charecters));
+			$row = mt_rand(0, $this->row - count($charecters));
+			foreach ($charecters as $charecter) {
+				$this->mainArray[$row][$col] = $charecter;
+				$row++;
+				$col++;
+			}
 		} elseif ($direction === self::BOTTOM_LEFT) {
-			
+			$col = mt_rand($this->col - 1 - ($this->col - count($charecters)) , $this->col - 1);
+			$row = mt_rand(0, $this->row - count($charecters));
+			foreach ($charecters as $charecter) {
+				$this->mainArray[$row][$col] = $charecter;
+				$row++;
+				$col--;
+			}
 		}
 
 	}
