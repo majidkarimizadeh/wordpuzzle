@@ -53,6 +53,13 @@ class PuzzleController extends Controller
 
 	public function generate(Request $request)
 	{
+		$this->validate($request, [
+			'number' => 'required|integer',
+	        'row' => 'required|integer',
+	        'col' => 'required|integer',
+	        'color'	=>	'required'
+	    ]);
+
 		$this->number = $request->number;
 		$this->row = $request->row;
 		$this->col = $request->col;
