@@ -66,7 +66,7 @@ class PuzzleController extends Controller
 		$this->generateEmptyArray();
 		$this->getFourRandomWords();
 		$this->fillArrayWithSelectedWord();
-		$this->exportExcel();
+		//$this->exportExcel();
 
 		return redirect()->route('show.generate.puzzle');
 	}
@@ -150,31 +150,31 @@ class PuzzleController extends Controller
 		$direction = mt_rand(0, 3);
 		if($direction === self::TOP) {
 			$col = mt_rand(0, $this->col - 1);
-			$row = mt_rand($this->row - count($charecters) - 1, $this->row - 1);
+			$row = mt_rand($this->row - 1 - ($this->row - count($charecters)) , $this->row - 1);
 			foreach ($charecters as $charecter) {
 				$this->mainArray[$row][$col] = $charecter;
 				$row--;
 			}
 		} elseif ($direction === self::BOTTOM) {
 			$col = mt_rand(0, $this->col - 1);
-			$row = mt_rand(0, $this->row - count($charecters) - 1);
+			$row = mt_rand(0, $this->row - count($charecters));
 			foreach ($charecters as $charecter) {
 				$this->mainArray[$row][$col] = $charecter;
 				$row++;
 			}
 		} elseif ($direction === self::LEFT) {
 			$row = mt_rand(0, $this->row - 1);
-			$col = mt_rand($this->col - count($charecters) - 1, $this->col - 1);
-			foreach ($charecters as $charecter) {
-				$this->mainArray[$row][$col] = $charecter;
-				$col++;
-			}
-		} elseif ($direction === self::RIGHT) {
-			$row = mt_rand(0, $this->row - 1);
-			$col = mt_rand(0, $this->col - count($charecters) - 1);
+			$col = mt_rand($this->col - 1 - ($this->col - count($charecters)) , $this->col - 1);
 			foreach ($charecters as $charecter) {
 				$this->mainArray[$row][$col] = $charecter;
 				$col--;
+			}
+		} elseif ($direction === self::RIGHT) {
+			$row = mt_rand(0, $this->row - 1);
+			$col = mt_rand(0, $this->col - count($charecters));
+			foreach ($charecters as $charecter) {
+				$this->mainArray[$row][$col] = $charecter;
+				$col++;
 			}
 		} elseif ($direction === self::TOP_RIGHT) {
 			
