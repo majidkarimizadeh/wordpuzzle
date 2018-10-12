@@ -5,8 +5,9 @@ namespace Puzzle\Wordpuzzle\Controllers;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use Exception;
 
 class PuzzleController extends Controller
 {
@@ -55,8 +56,8 @@ class PuzzleController extends Controller
 		$this->number = $request->number;
 		$this->row = $request->row;
 		$this->col = $request->col;
-
 		$this->blockColor = $request->color;
+
 		$this->width = $this->col * 100;
 		$this->height = $this->row * 100;
 		$this->blockSize = 100;
@@ -148,35 +149,58 @@ class PuzzleController extends Controller
 	private function checkPositionCondition($charecters)
 	{
 		$direction = mt_rand(0, 7);
-		if($direction === self::TOP) {
+
+		$topCondition = $this->row - 1 - ($this->row - count($charecters)) <= $this->row - 1;
+		$bottomCondition = 0 <= $this->row - count($charecters);
+		$leftCondition = $this->col - 1 - ($this->col - count($charecters)) <= $this->col - 1;
+		$rightCondition = 0 <= $this->col - count($charecters);
+
+		if(!$topCondition || !$leftCondition || !$rightCondition || !$bottomCondition) {
+			throw new Exception("Sorry the word's charecters ( ". $this->words[$this->answerIndex] ." ) is more than ". $this->col ." or ". $this->row, 1);
+			return;
+		}
+
+		if($direction === self::TOP && $topCondition) {
 			$col = mt_rand(0, $this->col - 1);
 			$row = mt_rand($this->row - 1 - ($this->row - count($charecters)) , $this->row - 1);
 			foreach ($charecters as $charecter) {
 				$this->mainArray[$row][$col] = $charecter;
 				$row--;
 			}
-		} elseif ($direction === self::BOTTOM) {
+			return;
+		} 
+
+		if ($direction === self::BOTTOM && $bottomCondition) {
 			$col = mt_rand(0, $this->col - 1);
 			$row = mt_rand(0, $this->row - count($charecters));
 			foreach ($charecters as $charecter) {
 				$this->mainArray[$row][$col] = $charecter;
 				$row++;
 			}
-		} elseif ($direction === self::LEFT) {
+			return;
+		} 
+
+		if ($direction === self::LEFT && $leftCondition) {
 			$row = mt_rand(0, $this->row - 1);
 			$col = mt_rand($this->col - 1 - ($this->col - count($charecters)) , $this->col - 1);
 			foreach ($charecters as $charecter) {
 				$this->mainArray[$row][$col] = $charecter;
 				$col--;
 			}
-		} elseif ($direction === self::RIGHT) {
+			return;
+		}
+
+		if ($direction === self::RIGHT && $rightCondition) {
 			$row = mt_rand(0, $this->row - 1);
 			$col = mt_rand(0, $this->col - count($charecters));
 			foreach ($charecters as $charecter) {
 				$this->mainArray[$row][$col] = $charecter;
 				$col++;
 			}
-		} elseif ($direction === self::TOP_RIGHT) {
+			return;
+		} 
+
+		if ($direction === self::TOP_RIGHT && $topCondition && $rightCondition) {
 			$col = mt_rand(0, $this->col - count($charecters));
 			$row = mt_rand($this->row - 1 - ($this->row - count($charecters)) , $this->row - 1);
 			foreach ($charecters as $charecter) {
@@ -184,7 +208,10 @@ class PuzzleController extends Controller
 				$row--;
 				$col++;
 			}
-		} elseif ($direction === self::TOP_LEFT) {
+			return;
+		} 
+
+		if ($direction === self::TOP_LEFT && $topCondition && $leftCondition) {
 			$col = mt_rand($this->col - 1 - ($this->col - count($charecters)) , $this->col - 1);
 			$row = mt_rand($this->row - 1 - ($this->row - count($charecters)) , $this->row - 1);
 			foreach ($charecters as $charecter) {
@@ -192,7 +219,10 @@ class PuzzleController extends Controller
 				$row--;
 				$col--;
 			}
-		} elseif ($direction === self::BOTTOM_RIGHT) {
+			return;
+		} 
+
+		if ($direction === self::BOTTOM_RIGHT && $bottomCondition && $rightCondition) {
 			$col = mt_rand(0, $this->col - count($charecters));
 			$row = mt_rand(0, $this->row - count($charecters));
 			foreach ($charecters as $charecter) {
@@ -200,7 +230,10 @@ class PuzzleController extends Controller
 				$row++;
 				$col++;
 			}
-		} elseif ($direction === self::BOTTOM_LEFT) {
+			return;
+		} 
+
+		if ($direction === self::BOTTOM_LEFT && $bottomCondition && $leftCondition) {
 			$col = mt_rand($this->col - 1 - ($this->col - count($charecters)) , $this->col - 1);
 			$row = mt_rand(0, $this->row - count($charecters));
 			foreach ($charecters as $charecter) {
@@ -208,6 +241,7 @@ class PuzzleController extends Controller
 				$row++;
 				$col--;
 			}
+			return;
 		}
 
 	}
