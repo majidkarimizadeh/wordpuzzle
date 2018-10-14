@@ -1,5 +1,7 @@
 # wordpuzzle
+This is a Laravel package for generating word search puzzle in desire row and column with multiple background color for styling your puzzle (only supported for persian language). 
 
+## what is word puzzle?
 A word puzzle is a word game that consists of the letters of words placed in a grid, which usually has a rectangular or square shape.
 
 The words may be placed horizontally, vertically, or diagonally.
