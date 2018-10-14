@@ -7,6 +7,12 @@ The words may be placed horizontally, vertically, or diagonally.
 
 Often a list of the hidden words is provided, but more challenging puzzles may let the player figure them out.
 
+# instalation
+```
+composer require wordpuzzlepersian/wordpuzzle
+```
+
+
 ![Alt text](/screenshot/shot1.png?raw=true "Shot 1")
 
 
