@@ -1,6 +1,6 @@
 # wordpuzzle
 
-A word puzzle is a word game that consists of the letters of words placed in a grid, which usually has a rectangular or square shape.
+## A word puzzle is a word game that consists of the letters of words placed in a grid, which usually has a rectangular or square shape.
 The words may be placed horizontally, vertically, or diagonally.
 Often a list of the hidden words is provided, but more challenging puzzles may let the player figure them out.
 
