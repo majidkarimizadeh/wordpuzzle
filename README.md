@@ -17,7 +17,7 @@ See [http://localhost:8000/puzzle](http://localhost:8000/puzzle)
 
 # usage
 
-![Alt text](/screenshot/shot1.png?raw=true =100x)
+![Alt text](/screenshot/shot1.png =100x)
 
 
 ![Alt text](/screenshot/shot2.png?raw=true "Shot 2" =250x)
