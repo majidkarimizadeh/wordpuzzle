@@ -8,6 +8,7 @@ The words may be placed horizontally, vertically, or diagonally.
 Often a list of the hidden words is provided, but more challenging puzzles may let the player figure them out.
 
 # instalation
+Add the package in your composer.json by executing the command.
 ```
 composer require wordpuzzlepersian/wordpuzzle
 ```
