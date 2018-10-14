@@ -13,6 +13,8 @@ Add the package in your composer.json by executing the command.
 composer require wordpuzzlepersian/wordpuzzle
 ```
 
+See [http://localhost:8000/puzzle](http://localhost:8000/puzzle)
+
 
 ![Alt text](/screenshot/shot1.png?raw=true "Shot 1")
 
