@@ -17,13 +17,13 @@ See [http://localhost:8000/puzzle](http://localhost:8000/puzzle)
 
 # usage
 
-![Alt text](/screenshot/shot1.png?raw=true "Shot 1")
+![Alt text](/screenshot/shot1.png?raw=true "Shot 1" =100x)
 
 
-![Alt text](/screenshot/shot2.png?raw=true "Shot 2")
+![Alt text](/screenshot/shot2.png?raw=true "Shot 2" =250x)
 
 
-![Alt text](/screenshot/shot3.png?raw=true "Shot 3")
+![Alt text](/screenshot/shot3.png?raw=true "Shot 3" =250x)
 
 
-![Alt text](/screenshot/shot4.png?raw=true "Shot 4")
+![Alt text](/screenshot/shot4.png?raw=true "Shot 4" =250x)
