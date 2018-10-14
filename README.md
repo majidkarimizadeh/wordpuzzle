@@ -15,6 +15,7 @@ composer require wordpuzzlepersian/wordpuzzle
 
 See [http://localhost:8000/puzzle](http://localhost:8000/puzzle)
 
+# usage
 
 ![Alt text](/screenshot/shot1.png?raw=true "Shot 1")
 
