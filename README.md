@@ -17,7 +17,7 @@ See [http://localhost:8000/puzzle](http://localhost:8000/puzzle)
 
 # usage
 
-![Alt text](/screenshot/shot4.png?raw=true "Shot 4"){:height="24px" width="48px"}
+![Alt text](/screenshot/shot4.png?raw=true "Shot 4")
 
 
 ![Alt text](/screenshot/shot1.png?raw=true "Shot 1")
