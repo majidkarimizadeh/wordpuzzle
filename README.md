@@ -17,6 +17,9 @@ See [http://localhost:8000/puzzle](http://localhost:8000/puzzle)
 
 # usage
 
+![Alt text](/screenshot/shot4.png?raw=true "Shot 4")
+
+
 ![Alt text](/screenshot/shot1.png?raw=true "Shot 1")
 
 
@@ -25,5 +28,3 @@ See [http://localhost:8000/puzzle](http://localhost:8000/puzzle)
 
 ![Alt text](/screenshot/shot3.png?raw=true "Shot 3")
 
-
-![Alt text](/screenshot/shot4.png?raw=true "Shot 4")
