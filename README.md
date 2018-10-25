@@ -17,7 +17,8 @@ See [http://localhost:8000/puzzle](http://localhost:8000/puzzle)
 
 # usage
 
-![](/screenshot/shot4.png =100x20)
+![Alt text](/screenshot/shot4.png?raw=true "Shot 4")
+
 
 ![Alt text](/screenshot/shot1.png?raw=true "Shot 1")
 
